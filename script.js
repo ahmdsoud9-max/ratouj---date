@@ -1,108 +1,15 @@
-const steps = [...document.querySelectorAll(".step")];
-const yesBtn = document.getElementById("yesBtn");
-const noBtn = document.getElementById("noBtn");
-const foodButtons = [...document.querySelectorAll(".food")];
-const foodNext = document.getElementById("foodNext");
-const summary = document.getElementById("summary");
-const toast = document.getElementById("toast");
-const dateInput = document.getElementById("date");
-const timeInput = document.getElementById("time");
-
-let selectedFood = "";
-
-function showStep(number) {
-  steps.forEach(step => {
-    step.classList.toggle("active", step.dataset.step === String(number));
-  });
-  window.scrollTo({ top: 0, behavior: "smooth" });
-}
-
-function showToast(message) {
-  toast.textContent = message;
-  toast.classList.add("show");
-  setTimeout(() => toast.classList.remove("show"), 2200);
-}
-
-yesBtn.addEventListener("click", () => {
-  showStep(2);
-  showToast("عرفت إنك رح تقولي نعم 😂❤️");
-});
-
-noBtn.addEventListener("click", () => {
-  noBtn.style.display = "none";
-  yesBtn.animate(
-    [
-      { transform: "scale(1)" },
-      { transform: "scale(1.08)" },
-      { transform: "scale(1)" }
-    ],
-    { duration: 500 }
-  );
-  showToast("زر لا اختفى... ما عاد عندك خيار 😂❤️");
-});
-
-document.querySelectorAll(".next").forEach(button => {
-  button.addEventListener("click", () => {
-    if (button.dataset.next === "3") {
-      if (!dateInput.value || !timeInput.value) {
-        showToast("اختاري التاريخ والوقت أولاً 🌸");
-        return;
-      }
-    }
-    if (button.dataset.next === "4") {
-      if (!selectedFood) {
-        showToast("اختاري شو رح ناكل 😋");
-        return;
-      }
-
-      const date = new Date(`${dateInput.value}T${timeInput.value}`);
-      const formattedDate = new Intl.DateTimeFormat("ar-SY", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        year: "numeric"
-      }).format(date);
-
-      const formattedTime = new Intl.DateTimeFormat("ar-SY", {
-        hour: "numeric",
-        minute: "2-digit"
-      }).format(date);
-
-      summary.innerHTML =
-        `📅 <strong>${formattedDate}</strong><br>` +
-        `🕐 <strong>${formattedTime}</strong><br>` +
-        `🍽️ <strong>${selectedFood}</strong>`;
-    }
-    showStep(Number(button.dataset.next));
-  });
-});
-
-foodButtons.forEach(button => {
-  button.addEventListener("click", () => {
-    foodButtons.forEach(b => b.classList.remove("selected"));
-    button.classList.add("selected");
-    selectedFood = button.dataset.food;
-  });
-});
-
-document.getElementById("againBtn").addEventListener("click", () => {
-  selectedFood = "";
-  foodButtons.forEach(b => b.classList.remove("selected"));
-  dateInput.value = "";
-  timeInput.value = "";
-  noBtn.style.display = "";
-  showStep(1);
-});
-
-function createHeart() {
-  const heart = document.createElement("div");
-  heart.className = "heart-float";
-  heart.textContent = Math.random() > .5 ? "♥" : "♡";
-  heart.style.left = `${Math.random() * 100}vw`;
-  heart.style.fontSize = `${12 + Math.random() * 18}px`;
-  heart.style.animationDuration = `${5 + Math.random() * 6}s`;
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 12000);
-}
-
-setInterval(createHeart, 900);
+let selectedPlace="",selectedFood="",chosenDate="",chosenTime="",memories=0,finalNoCount=0;
+const screens=[...document.querySelectorAll(".screen")],progress=document.getElementById("progressBar"),toast=document.getElementById("toast");
+function go(n){screens.forEach(s=>s.classList.toggle("active",+s.dataset.screen===n));progress.style.width=n/9*100+"%";scrollTo({top:0,behavior:"smooth"})}
+function msg(t){toast.textContent=t;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),2200)}
+function answer1(btn){document.querySelectorAll(".choice").forEach(x=>x.classList.remove("selected"));btn.classList.add("selected");document.getElementById("answer1").textContent="الإجابة الحقيقية؟ طبعًا... إنتِ ❤️";document.getElementById("next1").classList.remove("hidden")}
+const grid=document.getElementById("heartGrid"),correct=Math.floor(Math.random()*16);
+for(let i=0;i<16;i++){let b=document.createElement("button");b.className="heart-cell";b.textContent=i===correct?"♡":"♥";b.onclick=()=>{if(i===correct){document.getElementById("gameResult").textContent="لقيتيه! كنتِ مركزة 😂❤️";document.getElementById("next2").classList.remove("hidden");[...grid.children].forEach(x=>x.disabled=true)}else msg("مو هاد 😏 جربي قلب ثاني")};grid.appendChild(b)}
+function openMemory(btn,text){if(btn.classList.contains("open"))return;btn.classList.add("open");btn.textContent=text;memories++;if(memories===4)document.getElementById("next3").classList.remove("hidden")}
+function pickPlace(btn,name){document.querySelectorAll(".place").forEach(x=>x.classList.remove("selected"));btn.classList.add("selected");selectedPlace=name;document.getElementById("placeResult").textContent="اختيارك تم تسجيله ❤️ واضح إنك تعرفي تختاري!";document.getElementById("next4").classList.remove("hidden")}
+function saveDate(){let d=date.value,t=time.value;if(!d||!t){msg("اختاري التاريخ والوقت أولًا 🌸");return}let dt=new Date(d+"T"+t);chosenDate=new Intl.DateTimeFormat("ar-SY",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(dt);chosenTime=new Intl.DateTimeFormat("ar-SY",{hour:"numeric",minute:"2-digit"}).format(dt);msg("تم حفظ الموعد ❤️");go(6)}
+function pickFood(btn,name){document.querySelectorAll(".food").forEach(x=>x.classList.remove("selected"));btn.classList.add("selected");selectedFood=name;document.getElementById("next6").classList.remove("hidden")}
+function noFinal(){finalNoCount++;let b=document.getElementById("finalNo");if(finalNoCount===1){b.textContent="متأكدة؟ 🙈";msg("فكري فيها شوي 😂❤️")}else if(finalNoCount===2){b.textContent="آخر فرصة 😭";msg("لا تخلي كل هالرحلة تروح 😂")}else{b.style.transform="translateX("+(Math.random()*120-60)+"px)";msg("حتى الزر صار مرتبك 😂")}}
+function finish(){document.getElementById("summary").innerHTML="📍 المكان: "+selectedPlace+"<br>📅 الموعد: "+chosenDate+"<br>🕐 الوقت: "+chosenTime+"<br>🍽️ الأكل: "+selectedFood;go(9);celebrate()}
+function celebrate(){for(let i=0;i<30;i++)setTimeout(()=>{let p=document.createElement("div");p.className="particle";p.textContent=["❤️","🌸","✨","💕"][Math.floor(Math.random()*4)];p.style.left=Math.random()*100+"vw";p.style.fontSize=12+Math.random()*22+"px";p.style.animationDuration=4+Math.random()*4+"s";document.getElementById("particles").appendChild(p);setTimeout(()=>p.remove(),9000)},i*80)}
+setInterval(()=>{let p=document.createElement("div");p.className="particle";p.textContent=Math.random()>.5?"♡":"♥";p.style.left=Math.random()*100+"vw";p.style.fontSize=12+Math.random()*18+"px";p.style.animationDuration=6+Math.random()*5+"s";document.getElementById("particles").appendChild(p);setTimeout(()=>p.remove(),12000)},900)

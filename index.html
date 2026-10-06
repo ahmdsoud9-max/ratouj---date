@@ -1,78 +1,125 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>إلى حبيبتي رتوج ❤️</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رحلتنا الصغيرة ❤️</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="hearts" aria-hidden="true"></div>
+<div id="particles"></div>
+<main class="shell">
+<div class="progress"><span id="progressBar"></span></div>
+<section class="card">
+<div class="brand">♥</div>
 
-  <main class="app">
-    <section class="card" id="card">
-      <div class="top-heart">♥</div>
-      <p class="eyebrow">إلى حبيبتي</p>
-      <h1>رتوج 🌸</h1>
+<div class="screen active" data-screen="0">
+<div class="hero-icon">🌸</div><p class="mini">إلى حبيبتي</p><h1>رتوج</h1>
+<p class="lead">حضّرتلك رحلة صغيرة...<br>بس نهايتها فيها شيء ما رح تتوقعيه ❤️</p>
+<button class="main-btn" onclick="go(1)">نبدأ الرحلة ✨</button>
+</div>
 
-      <!-- Step 1 -->
-      <div class="step active" data-step="1">
-        <h2>هل تريد الخروج معي في موعد؟</h2>
-        <p class="sub">سؤال بسيط... وإجابته ممكن تغيّر يومي كله 😂❤️</p>
-        <div class="buttons">
-          <button class="btn yes" id="yesBtn">نعم ❤️</button>
-          <button class="btn no" id="noBtn">لا 🙈</button>
-        </div>
-      </div>
+<div class="screen" data-screen="1">
+<div class="number">01</div><h2>عندي سؤال بسيط...</h2>
+<p class="lead">بتعرفي شو أحلى شيء صار معي بالفترة الأخيرة؟</p>
+<div class="choices">
+<button class="choice" onclick="answer1(this)">ربحت باليانصيب 😂</button>
+<button class="choice" onclick="answer1(this)">اشتريت سيارة 🚗</button>
+<button class="choice" onclick="answer1(this)">تعرفت على شخص مميز ❤️</button>
+<button class="choice" onclick="answer1(this)">ما بعرف 🤷‍♀️</button>
+</div>
+<div id="answer1" class="reveal"></div>
+<button id="next1" class="main-btn hidden" onclick="go(2)">كملي معي 🌷</button>
+</div>
 
-      <!-- Step 2 -->
-      <div class="step" data-step="2">
-        <h2>متى نلتقي؟ 🕐</h2>
-        <p class="sub">اختاري اليوم والوقت الذي يناسبك.</p>
-        <div class="form-group">
-          <label for="date">التاريخ</label>
-          <input id="date" type="date">
-        </div>
-        <div class="form-group">
-          <label for="time">الوقت</label>
-          <input id="time" type="time">
-        </div>
-        <button class="btn primary next" data-next="3">التالي 💕</button>
-      </div>
+<div class="screen" data-screen="2">
+<div class="number">02</div><h2>مهمة صغيرة 🧩</h2>
+<p class="lead">في قلب واحد مختلف عن الباقي... لاقيه واضغطي عليه ❤️</p>
+<div class="heart-grid" id="heartGrid"></div>
+<div id="gameResult" class="reveal"></div>
+<button id="next2" class="main-btn hidden" onclick="go(3)">عرفتيه! نكمل 😌</button>
+</div>
 
-      <!-- Step 3 -->
-      <div class="step" data-step="3">
-        <h2>شو رح ناكل؟ 😋</h2>
-        <p class="sub">اختاري الشي اللي نفسك فيه.</p>
-        <div class="food-grid">
-          <button class="food" data-food="بيتزا 🍕"><span>🍕</span>بيتزا</button>
-          <button class="food" data-food="شاورما 🌯"><span>🌯</span>شاورما</button>
-          <button class="food" data-food="حلويات 🍰"><span>🍰</span>حلويات</button>
-          <button class="food" data-food="مكسرات 🥜"><span>🥜</span>مكسرات</button>
-        </div>
-        <button class="btn primary next" data-next="4" id="foodNext">التالي 🌸</button>
-      </div>
+<div class="screen" data-screen="3">
+<div class="number">03</div><h2>بتتذكري؟ 💭</h2>
+<p class="lead">افتحي البطاقات وحدة وحدة...</p>
+<div class="memory-grid">
+<button class="memory" onclick="openMemory(this,'أحلى شيء؟ إن وجودك صار جزء من أيامي ❤️')">أول شيء خلاني أحب وجودك؟</button>
+<button class="memory" onclick="openMemory(this,'الضحك اللي بيخلينا ننسى شو كنا عم نحكي أصلًا 😂')">أكثر شيء بيضحكني معك؟</button>
+<button class="memory" onclick="openMemory(this,'نفسي نعمل ذكريات كثيرة، مو بس نحكي عنها 🌎')">شيء نفسي نعمله سوا؟</button>
+<button class="memory" onclick="openMemory(this,'يمكن ما بقلك ياه كل يوم... بس وجودك يعنيلي كثير ❤️')">شيء ما بقلك ياه كثير؟</button>
+</div>
+<button id="next3" class="main-btn hidden" onclick="go(4)">عندي سؤال أهم 🎀</button>
+</div>
 
-      <!-- Step 4 -->
-      <div class="step" data-step="4">
-        <div class="final-icon">💌</div>
-        <h2>إلى حبيبتي رتوج</h2>
-        <div class="letter">
-          <p>من بين كل الأيام، اخترتَ هذا اليوم لتكون فيه معي – ومن بين كل الأطباق، اخترتَ ما يجعل القلب يضحك.</p>
-          <p>سأحفظ التاريخ، وسأصل مبكراً، وسأبتسم أكثر مما ينبغي، وسأترك لك أجمل مقعد في الحكاية.</p>
-          <p>سنتكلم حتى تبرد الأطباق، ثم نطلب المزيد، ثم نتذكر أننا نسينا الوقت تماماً.</p>
-          <p>شكراً لأنك قلتَ «حسناً»... حتى لو حاولت الهروب من الزر أكثر من مرة. 🌸</p>
-        </div>
-        <div class="summary" id="summary"></div>
-        <button class="btn primary" id="againBtn">أعيديها من البداية ❤️</button>
-      </div>
-    </section>
-  </main>
+<div class="screen" data-screen="4">
+<div class="number">04</div><h2>لو طلعنا سوا... وين نروح؟ 🌸</h2>
+<p class="lead">اختاري المكان، وأنا بتكفل بالباقي 😌</p>
+<div class="place-grid">
+<button class="place" onclick="pickPlace(this,'مطعم 🍽️')">🍽️<span>مطعم</span></button>
+<button class="place" onclick="pickPlace(this,'حديقة الجامعة 🌳')">🌳<span>حديقة الجامعة</span></button>
+<button class="place" onclick="pickPlace(this,'حديقة على اختياري 🌿')">🌿<span>حديقة على اختياري</span></button>
+<button class="place" onclick="pickPlace(this,'المراسم 🙈')">🙈<span>المراسم</span></button>
+</div>
+<div id="placeResult" class="reveal"></div>
+<button id="next4" class="main-btn hidden" onclick="go(5)">اختيار حلو... نكمل ❤️</button>
+</div>
 
-  <div class="toast" id="toast"></div>
-  <script src="script.js"></script>
-</body>
-</html>
+<div class="screen" data-screen="5">
+<div class="number">05</div><h2>متى نلتقي؟ 🕐</h2>
+<p class="lead">اختاري اليوم والوقت اللي بناسبك.</p>
+<div class="fields">
+<label>التاريخ<input id="date" type="date"></label>
+<label>الوقت<input id="time" type="time"></label>
+</div>
+<button class="main-btn" onclick="saveDate()">ثبتنا الموعد 💕</button>
+</div>
+
+<div class="screen" data-screen="6">
+<div class="number">06</div><h2>وشو رح ناكل؟ 😋</h2>
+<p class="lead">لأن الموعد بدون أكل ما بينحسب موعد 😂</p>
+<div class="food-grid">
+<button class="food" onclick="pickFood(this,'بيتزا 🍕')">🍕<span>بيتزا</span></button>
+<button class="food" onclick="pickFood(this,'شاورما 🌯')">🌯<span>شاورما</span></button>
+<button class="food" onclick="pickFood(this,'حلويات 🍰')">🍰<span>حلويات</span></button>
+<button class="food" onclick="pickFood(this,'مكسرات 🥜')">🥜<span>مكسرات</span></button>
+</div>
+<button id="next6" class="main-btn hidden" onclick="go(7)">تمام... بقي شيء واحد 💌</button>
+</div>
+
+<div class="screen" data-screen="7">
+<div class="number">07</div><div class="letter-icon">💌</div>
+<h2>رسالة إلك يا رتوج</h2>
+<div class="letter">
+<p>من بين كل الأيام، اخترتَ هذا اليوم لتكون فيه معي – ومن بين كل الأطباق، اخترتَ ما يجعل القلب يضحك.</p>
+<p>سأحفظ التاريخ، وسأصل مبكراً، وسأبتسم أكثر مما ينبغي، وسأترك لك أجمل مقعد في الحكاية.</p>
+<p>سنتكلم حتى تبرد الأطباق، ثم نطلب المزيد، ثم نتذكر أننا نسينا الوقت تماماً.</p>
+<p>شكراً لأنك قلتَ «حسناً»... حتى لو حاولت الهروب من الزر أكثر من مرة. 🌸</p>
+</div>
+<button class="main-btn" onclick="go(8)">بس عندي سؤال أخير... ❤️</button>
+</div>
+
+<div class="screen" data-screen="8">
+<div class="final-icon">🥹❤️</div><p class="mini">السؤال الأخير</p>
+<h2>رتوج... موافقة نعمل كل هالأشياء سوا؟</h2>
+<p class="lead">اختاري بكل صراحة... وأنا رح أحترم إجابتك ❤️</p>
+<div class="final-buttons">
+<button class="main-btn" onclick="finish()">أكيد ❤️</button>
+<button class="no-btn" id="finalNo" onclick="noFinal()">لا 🙈</button>
+</div>
+</div>
+
+<div class="screen" data-screen="9">
+<div class="final-icon">🎉❤️</div><p class="mini">تم تسجيل الإجابة بنجاح</p>
+<h1>موعدنا القادم<br>أنا وإنتِ 🌸</h1>
+<div id="summary" class="summary"></div>
+<p class="lead">والباقي... نخليه ذكرى حلوة نعيشها سوا ✨</p>
+<button class="main-btn" onclick="location.reload()">أعيدي الرحلة 🔄</button>
+</div>
+</section></main>
+<div id="toast" class="toast"></div>
+<script src="script.js"></script>
+</body></html>
