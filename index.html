@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>رحلتنا الصغيرة ❤️</title>
+<title>حبيبتي رتوج 🫣❤ — رحلتنا الصغيرة</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
@@ -14,15 +14,15 @@
 <main class="shell">
 <div class="progress"><span id="progressBar"></span></div>
 <section class="card">
-<div class="brand">♥</div>
+<div class="brand">♥</div><button class="sound-toggle" id="soundToggle" onclick="toggleSound()">🔊</button>
 
-<div class="screen active" data-screen="0">
+<div class="screen active" data-screen="0"><div class="screen-title">حبيبتي رتوج 🫣❤</div>
 <div class="hero-icon">🌸</div><p class="mini">إلى حبيبتي</p><h1>رتوج</h1>
 <p class="lead">حضّرتلك رحلة صغيرة...<br>بس نهايتها فيها شيء ما رح تتوقعيه ❤️</p>
 <button class="main-btn" onclick="go(1)">نبدأ الرحلة ✨</button>
 </div>
 
-<div class="screen" data-screen="1">
+<div class="screen" data-screen="1"><div class="screen-title">حبيبتي رتوج 🫣❤</div>
 <div class="number">01</div><h2>عندي سؤال بسيط...</h2>
 <p class="lead">بتعرفي شو أحلى شيء صار معي بالفترة الأخيرة؟</p>
 <div class="choices">
@@ -35,7 +35,7 @@
 <button id="next1" class="main-btn hidden" onclick="go(2)">كملي معي 🌷</button>
 </div>
 
-<div class="screen" data-screen="2">
+<div class="screen" data-screen="2"><div class="screen-title">حبيبتي رتوج 🫣❤</div>
 <div class="number">02</div><h2>مهمة صغيرة 🧩</h2>
 <p class="lead">في قلب واحد مختلف عن الباقي... لاقيه واضغطي عليه ❤️</p>
 <div class="heart-grid" id="heartGrid"></div>
@@ -43,7 +43,7 @@
 <button id="next2" class="main-btn hidden" onclick="go(3)">عرفتيه! نكمل 😌</button>
 </div>
 
-<div class="screen" data-screen="3">
+<div class="screen" data-screen="3"><div class="screen-title">حبيبتي رتوج 🫣❤</div>
 <div class="number">03</div><h2>بتتذكري؟ 💭</h2>
 <p class="lead">افتحي البطاقات وحدة وحدة...</p>
 <div class="memory-grid">
@@ -55,7 +55,7 @@
 <button id="next3" class="main-btn hidden" onclick="go(4)">عندي سؤال أهم 🎀</button>
 </div>
 
-<div class="screen" data-screen="4">
+<div class="screen" data-screen="4"><div class="screen-title">حبيبتي رتوج 🫣❤</div>
 <div class="number">04</div><h2>لو طلعنا سوا... وين نروح؟ 🌸</h2>
 <p class="lead">اختاري المكان، وأنا بتكفل بالباقي 😌</p>
 <div class="place-grid">
@@ -69,8 +69,54 @@
 </div>
 
 <div class="screen" data-screen="5">
-<div class="number">05</div><h2>متى نلتقي؟ 🕐</h2>
-<p class="lead">اختاري اليوم والوقت اللي بناسبك.</p>
+<div class="screen-title">حبيبتي رتوج 🫣❤</div><div class="number">05</div><h2>ماذا نأكل؟ 😋</h2>
+<p class="lead">اختاري أكلتنا للموعد 🍽️</p>
+<div class="food-grid">
+<button class="food" onclick="pickFood(this,'بيتزا 🍕')">🍕<span>بيتزا</span></button>
+<button class="food" onclick="pickFood(this,'شاورما 🌯')">🌯<span>شاورما</span></button>
+<button class="food" onclick="pickFood(this,'حلويات 🍰')">🍰<span>حلويات</span></button>
+<button class="food" onclick="pickFood(this,'معجنات 🥐')">🥐<span>معجنات</span></button>
+</div>
+<div id="foodResult" class="reveal"></div>
+<button id="next5" class="main-btn hidden" onclick="go(6)">اختيار حلو... نكمل 💗</button>
+</div>
+
+<div class="screen" data-screen="6">
+<div class="screen-title">حبيبتي رتوج 🫣❤</div><div class="number">06</div><div class="letter-icon">💌</div>
+<h2>رسالة إلك يا رتوج</h2>
+<div class="letter">
+<p>من بين كل الأيام، اخترت هذا اليوم لتكون فيه معنا ذكرى حلوة.</p>
+<p>سأحفظ التاريخ، وسأصل مبكراً، وسأترك أجمل مقعد في الحكاية.</p>
+<p>سنحكي ونضحك، ويمكن ننسى الوقت تماماً. 🌸</p>
+<p>والأجمل أن هذه الرحلة لسا فيها تفاصيل ما اكتشفناها.</p>
+</div>
+<button class="main-btn" onclick="go(7)">نكمل؟ ✨</button>
+</div>
+
+<div class="screen" data-screen="7">
+<div class="screen-title">حبيبتي رتوج 🫣❤</div><div class="number">07</div><h2>ابحثي عن القلب 💗</h2>
+<p class="lead">في قلب واحد مختلف عن الباقي... لاقيه واضغطي عليه قبل انتهاء الوقت!</p>
+<div class="timer" id="timer">00:30</div><div class="heart-grid" id="heartGrid"></div>
+<div id="gameResult" class="reveal"></div>
+<button id="next7" class="main-btn hidden" onclick="go(8)">لقيتيه! نكمل 😌</button>
+</div>
+
+<div class="screen" data-screen="8">
+<div class="screen-title">حبيبتي رتوج 🫣❤</div><div class="number">08</div><h2>اختيار أجمل الذكريات 📸</h2>
+<p class="lead">أي ذكرى إلها مكان خاص بقلبك؟ 🫣</p>
+<div class="memory-grid">
+<button class="memory" onclick="pickMemory(this,'يوم تسجيلك بالمفاضلة 📝')">📝<br>يوم تسجيلك بالمفاضلة</button>
+<button class="memory" onclick="pickMemory(this,'أول يوم بالجامعة 🎓')">🎓<br>أول يوم بالجامعة</button>
+<button class="memory" onclick="pickMemory(this,'يوم الاعتراف ❤️')">❤️<br>يوم الاعتراف</button>
+<button class="memory" onclick="pickMemory(this,'كل الأيام ذكريات جميلة 🫣')">🌷<br>كل الأيام ذكريات جميلة 🫣</button>
+</div>
+<div id="memoryResult" class="reveal"></div>
+<button id="next8" class="main-btn hidden" onclick="go(9)">ذكرى جميلة... نكمل 📅</button>
+</div>
+
+<div class="screen" data-screen="9">
+<div class="screen-title">حبيبتي رتوج 🫣❤</div><div class="number">09</div><h2>اختاري موعدنا القادم 📅</h2>
+<p class="lead">التاريخ والوقت على ذوقك</p>
 <div class="fields">
 <label>التاريخ<input id="date" type="date"></label>
 <label>الوقت<input id="time" type="time"></label>
@@ -78,45 +124,11 @@
 <button class="main-btn" onclick="saveDate()">ثبتنا الموعد 💕</button>
 </div>
 
-<div class="screen" data-screen="6">
-<div class="number">06</div><h2>وشو رح ناكل؟ 😋</h2>
-<p class="lead">لأن الموعد بدون أكل ما بينحسب موعد 😂</p>
-<div class="food-grid">
-<button class="food" onclick="pickFood(this,'بيتزا 🍕')">🍕<span>بيتزا</span></button>
-<button class="food" onclick="pickFood(this,'شاورما 🌯')">🌯<span>شاورما</span></button>
-<button class="food" onclick="pickFood(this,'حلويات 🍰')">🍰<span>حلويات</span></button>
-<button class="food" onclick="pickFood(this,'مكسرات 🥜')">🥜<span>مكسرات</span></button>
-</div>
-<button id="next6" class="main-btn hidden" onclick="go(7)">تمام... بقي شيء واحد 💌</button>
-</div>
-
-<div class="screen" data-screen="7">
-<div class="number">07</div><div class="letter-icon">💌</div>
-<h2>رسالة إلك يا رتوج</h2>
-<div class="letter">
-<p>من بين كل الأيام، اخترتَ هذا اليوم لتكون فيه معي – ومن بين كل الأطباق، اخترتَ ما يجعل القلب يضحك.</p>
-<p>سأحفظ التاريخ، وسأصل مبكراً، وسأبتسم أكثر مما ينبغي، وسأترك لك أجمل مقعد في الحكاية.</p>
-<p>سنتكلم حتى تبرد الأطباق، ثم نطلب المزيد، ثم نتذكر أننا نسينا الوقت تماماً.</p>
-<p>شكراً لأنك قلتَ «حسناً»... حتى لو حاولت الهروب من الزر أكثر من مرة. 🌸</p>
-</div>
-<button class="main-btn" onclick="go(8)">بس عندي سؤال أخير... ❤️</button>
-</div>
-
-<div class="screen" data-screen="8">
-<div class="final-icon">🥹❤️</div><p class="mini">السؤال الأخير</p>
-<h2>رتوج... موافقة نعمل كل هالأشياء سوا؟</h2>
-<p class="lead">اختاري بكل صراحة... وأنا رح أحترم إجابتك ❤️</p>
-<div class="final-buttons">
-<button class="main-btn" onclick="finish()">أكيد ❤️</button>
-<button class="no-btn" id="finalNo" onclick="noFinal()">لا 🙈</button>
-</div>
-</div>
-
-<div class="screen" data-screen="9">
-<div class="final-icon">🎉❤️</div><p class="mini">تم تسجيل الإجابة بنجاح</p>
-<h1>موعدنا القادم<br>أنا وإنتِ 🌸</h1>
+<div class="screen" data-screen="10">
+<div class="screen-title">حبيبتي رتوج 🫣❤</div><div class="final-icon">🎉❤️</div><p class="mini">مغامرتنا مستمرة...</p>
+<h1>شكراً لأنكِ جزء من قصتي</h1>
 <div id="summary" class="summary"></div>
-<p class="lead">والباقي... نخليه ذكرى حلوة نعيشها سوا ✨</p>
+<p class="lead">والباقي... نخليه ذكريات حلوة نضيفها للحكاية ✨</p>
 <button class="main-btn" onclick="location.reload()">أعيدي الرحلة 🔄</button>
 </div>
 </section></main>
