@@ -1,17 +1,205 @@
-let selectedPlace="",selectedFood="",selectedMemory="",chosenDate="",chosenTime="",finalNoCount=0,soundOn=true,audioCtx=null,gameTimer=null,timeLeft=30;
-const screens=[...document.querySelectorAll(".screen")],progress=document.getElementById("progressBar"),toast=document.getElementById("toast");
-function go(n){screens.forEach(s=>s.classList.toggle("active",+s.dataset.screen===n));progress.style.width=n/10*100+"%";window.scrollTo({top:0,behavior:"smooth"});playTone(n===10?"win":"click");if(n===7)startGame();if(n===10){renderSummary();celebrate()}}
-function msg(t){toast.textContent=t;toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),2200)}
-function pickPlace(btn,name){document.querySelectorAll(".place").forEach(x=>x.classList.remove("selected"));btn.classList.add("selected");selectedPlace=name;document.getElementById("placeResult").textContent="تم اختيار المكان 💗";msg("اختيار جميل 🫣❤️");playTone("select")}
-function pickFood(btn,name){document.querySelectorAll(".food").forEach(x=>x.classList.remove("selected"));btn.classList.add("selected");selectedFood=name;document.getElementById("foodResult").textContent="تم اختيار الأكلة 😋❤️";document.getElementById("next5").classList.remove("hidden");playTone("select")}
-function pickMemory(btn,name){document.querySelectorAll(".memory").forEach(x=>x.classList.remove("selected"));btn.classList.add("selected");selectedMemory=name;document.getElementById("memoryResult").textContent="هاي الذكرى صارت محفوظة بالقصة 📸💗";document.getElementById("next8").classList.remove("hidden");burst(btn);playTone("select")}
-function saveDate(){let d=document.getElementById("date").value,t=document.getElementById("time").value;if(!d||!t){msg("اختاري التاريخ والوقت أولًا 🌸");return}let dt=new Date(d+"T"+t);chosenDate=new Intl.DateTimeFormat("ar-SY",{weekday:"long",day:"numeric",month:"long",year:"numeric"}).format(dt);chosenTime=new Intl.DateTimeFormat("ar-SY",{hour:"numeric",minute:"2-digit"}).format(dt);msg("تم حفظ الموعد ❤️");go(10)}
-function renderSummary(){document.getElementById("summary").innerHTML="📍 المكان: "+(selectedPlace||"لم يتم تحديده")+"<br>🍽️ الأكل: "+(selectedFood||"لم يتم تحديده")+"<br>📸 أجمل ذكرى: "+(selectedMemory||"كل الأيام ذكريات جميلة 🫣")+"<br>📅 الموعد: "+(chosenDate||"لم يتم تحديده")+"<br>🕐 الوقت: "+(chosenTime||"لم يتم تحديده")}
-function startGame(){clearInterval(gameTimer);timeLeft=30;document.getElementById("timer").textContent="00:30";document.getElementById("gameResult").textContent="القلب المختلف مخبّى بين القلوب...";document.getElementById("next7").classList.add("hidden");let grid=document.getElementById("heartGrid");grid.innerHTML="";let correct=Math.floor(Math.random()*16);for(let i=0;i<16;i++){let b=document.createElement("button");b.className="heart-cell";b.textContent=i===correct?"💖":"💗";b.onclick=()=>{if(i===correct){clearInterval(gameTimer);document.getElementById("gameResult").textContent="لقيتيه! كنتِ مركزة 😂❤️";document.getElementById("next7").classList.remove("hidden");[...grid.children].forEach(x=>x.disabled=true);burst(b);celebrate();playTone("win")}else{msg("مو هاد 😏 جربي قلب ثاني");playTone("wrong")}};grid.appendChild(b)}gameTimer=setInterval(()=>{timeLeft--;document.getElementById("timer").textContent="00:"+String(timeLeft).padStart(2,"0");if(timeLeft<=0){clearInterval(gameTimer);document.getElementById("gameResult").textContent="خلص الوقت 😭 جربي مرة ثانية!"}},1000)}
-function toggleSound(){soundOn=!soundOn;document.getElementById("soundToggle").textContent=soundOn?"🔊":"🔇";if(soundOn)playTone("click")}
-function ensureAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume()}
-function playTone(kind){if(!soundOn)return;try{ensureAudio();let o=audioCtx.createOscillator(),g=audioCtx.createGain(),now=audioCtx.currentTime,f=kind==="win"?660:kind==="select"?520:kind==="wrong"?180:420;o.type="sine";o.frequency.setValueAtTime(f,now);o.frequency.exponentialRampToValueAtTime(f*1.35,now+.16);g.gain.setValueAtTime(.0001,now);g.gain.exponentialRampToValueAtTime(.055,now+.015);g.gain.exponentialRampToValueAtTime(.0001,now+.28);o.connect(g).connect(audioCtx.destination);o.start(now);o.stop(now+.3);if(kind==="win"){setTimeout(()=>playTone("select"),130);setTimeout(()=>playTone("click"),260)}}catch(e){}}
-function burst(el){let r=el.getBoundingClientRect();for(let i=0;i<8;i++){let h=document.createElement("div");h.className="particle burst";h.textContent="❤";h.style.left=r.left+r.width/2+(Math.random()-.5)*70+"px";h.style.top=r.top+"px";h.style.fontSize=10+Math.random()*14+"px";h.style.animationDuration=.8+Math.random()*.8+"s";document.body.appendChild(h);setTimeout(()=>h.remove(),1800)}}
-function celebrate(){for(let i=0;i<30;i++)setTimeout(()=>{let p=document.createElement("div");p.className="particle";p.textContent=["❤️","🌸","✨","💕"][Math.floor(Math.random()*4)];p.style.left=Math.random()*100+"vw";p.style.fontSize=12+Math.random()*22+"px";p.style.animationDuration=4+Math.random()*4+"s";document.getElementById("particles").appendChild(p);setTimeout(()=>p.remove(),9000)},i*70)}
-setInterval(()=>{let p=document.createElement("div");p.className="particle";p.textContent=Math.random()>.5?"♡":"♥";p.style.left=Math.random()*100+"vw";p.style.fontSize=12+Math.random()*18+"px";p.style.animationDuration=6+Math.random()*5+"s";document.getElementById("particles").appendChild(p);setTimeout(()=>p.remove(),12000)},900)
-document.addEventListener("click",()=>{if(soundOn)ensureAudio()},{once:true});
+(() => {
+"use strict";
+
+const state = { page: 0, answers: {}, audio: true, timer: null, seconds: 30 };
+const pages = [...document.querySelectorAll(".page")];
+const bar = document.getElementById("bar");
+const counter = document.getElementById("counter");
+
+function go(n){
+  if(n === 5 && !state.answers[4]) {
+    // لا نمنع الانتقال: يمكن اختيار الطعام أو المتابعة، لكن الاختيار سيحفظ عند الضغط.
+  }
+  pages.forEach(p => p.classList.toggle("active", Number(p.dataset.page) === n));
+  state.page = n;
+  bar.style.width = (n / 10 * 100) + "%";
+  counter.textContent = n === 0 ? "البداية" : `المرحلة ${n} من 10`;
+  window.scrollTo({top:0, behavior:"smooth"});
+  tone(n === 10 ? "win" : "click");
+  if(n === 7) startHeartGame();
+  if(n === 10){ renderSummary(); celebrate(); }
+}
+
+function selectChoice(button){
+  const page = button.closest(".page");
+  const n = Number(page.dataset.page);
+  const value = button.dataset.value;
+  state.answers[n] = value;
+  page.querySelectorAll(".choice").forEach(x => x.classList.remove("selected"));
+  button.classList.add("selected");
+  const note = page.querySelector(".note");
+  if(note) note.textContent = "تم الاختيار 💗";
+  burst(button);
+  tone("select");
+}
+
+function startHeartGame(){
+  clearInterval(state.timer);
+  state.seconds = 30;
+  const timer = document.getElementById("timer");
+  const grid = document.getElementById("heartGrid");
+  const msg = document.getElementById("gameMsg");
+  const next = document.getElementById("gameNext");
+  grid.innerHTML = "";
+  next.classList.add("hidden");
+  msg.textContent = "القلب المختلف مخبّى بين القلوب...";
+  timer.textContent = "00:30";
+  const target = Math.floor(Math.random() * 25);
+
+  for(let i=0;i<25;i++){
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "game-heart";
+    b.textContent = i === target ? "💖" : "💗";
+    b.addEventListener("click", () => {
+      if(i === target){
+        clearInterval(state.timer);
+        b.classList.add("found");
+        msg.textContent = "لقيتيه! 🫣❤ كنتِ سريعة!";
+        next.classList.remove("hidden");
+        celebrate();
+        tone("win");
+      }else{
+        b.animate(
+          [{transform:"translateX(-5px)"},{transform:"translateX(5px)"},{transform:"translateX(0)"}],
+          {duration:180}
+        );
+        tone("wrong");
+      }
+    });
+    grid.appendChild(b);
+  }
+
+  state.timer = setInterval(() => {
+    state.seconds--;
+    timer.textContent = "00:" + String(Math.max(0,state.seconds)).padStart(2,"0");
+    if(state.seconds <= 0){
+      clearInterval(state.timer);
+      msg.textContent = "خلص الوقت 😭 جربي مرة ثانية بالانتقال للمرحلة السابقة ثم العودة.";
+    }
+  },1000);
+}
+
+function renderSummary(){
+  const date = document.getElementById("date").value;
+  const time = document.getElementById("time").value;
+  let dateText = "لم يتم تحديده";
+  if(date){
+    const d = new Date(date + "T00:00:00");
+    dateText = d.toLocaleDateString("ar-SY",{year:"numeric",month:"long",day:"numeric"});
+  }
+  document.getElementById("summary").innerHTML =
+    `<b>المكان:</b> ${state.answers[4] || "لم يتم الاختيار"}<br>` +
+    `<b>الأكلة:</b> ${state.answers[5] || "لم يتم الاختيار"}<br>` +
+    `<b>أجمل ذكرى:</b> ${state.answers[8] || "لم يتم الاختيار"}<br>` +
+    `<b>الموعد:</b> ${dateText} — ${time || "لم يتم تحديد الوقت"}`;
+}
+
+function burst(el){
+  const r = el.getBoundingClientRect();
+  for(let i=0;i<9;i++){
+    const x = document.createElement("div");
+    x.className = "floating";
+    x.textContent = Math.random() > .25 ? "❤" : "✦";
+    x.style.left = (r.left + r.width/2 + (Math.random()-.5)*90) + "px";
+    x.style.bottom = (innerHeight-r.top) + "px";
+    x.style.fontSize = (10 + Math.random()*12) + "px";
+    x.style.animationDuration = (.8 + Math.random()*.8) + "s";
+    document.body.appendChild(x);
+    setTimeout(()=>x.remove(),1800);
+  }
+}
+
+function celebrate(){
+  for(let i=0;i<34;i++){
+    const s=document.createElement("i");
+    s.className="spark";
+    s.style.left=Math.random()*100+"vw";
+    s.style.top="-10px";
+    s.style.setProperty("--x",(Math.random()-.5)*260+"px");
+    s.style.background=`hsl(${20+Math.random()*330},85%,70%)`;
+    s.style.animationDelay=(Math.random()*.25)+"s";
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),1800);
+  }
+}
+
+let audioCtx = null;
+function audioReady(){
+  if(!state.audio) return null;
+  try{
+    audioCtx ||= new (window.AudioContext || window.webkitAudioContext)();
+    if(audioCtx.state === "suspended") audioCtx.resume();
+    return audioCtx;
+  }catch(e){ return null; }
+}
+function tone(kind){
+  const ctx=audioReady();
+  if(!ctx) return;
+  const osc=ctx.createOscillator(), gain=ctx.createGain();
+  const now=ctx.currentTime;
+  const f=kind==="win"?660:kind==="select"?520:kind==="wrong"?180:420;
+  osc.type=kind==="win"?"sine":"triangle";
+  osc.frequency.setValueAtTime(f,now);
+  osc.frequency.exponentialRampToValueAtTime(f*1.28,now+.14);
+  gain.gain.setValueAtTime(.0001,now);
+  gain.gain.exponentialRampToValueAtTime(.055,now+.01);
+  gain.gain.exponentialRampToValueAtTime(.0001,now+.25);
+  osc.connect(gain).connect(ctx.destination);
+  osc.start(now); osc.stop(now+.27);
+}
+
+document.querySelectorAll("[data-next]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const n=Number(btn.dataset.next);
+    if(n===9){
+      // التاريخ مرحلة اختيارية، ننتقل كما هو.
+    }
+    go(n);
+  });
+});
+
+document.querySelectorAll(".choice").forEach(btn=>{
+  btn.addEventListener("click",()=>selectChoice(btn));
+});
+
+document.getElementById("saveDate").addEventListener("click",()=>{
+  const d=document.getElementById("date").value;
+  const t=document.getElementById("time").value;
+  if(!d || !t){
+    document.getElementById("date").animate([{transform:"translateX(-4px)"},{transform:"translateX(4px)"},{transform:"translateX(0)"}],{duration:220});
+    document.getElementById("time").animate([{transform:"translateX(-4px)"},{transform:"translateX(4px)"},{transform:"translateX(0)"}],{duration:220});
+    return;
+  }
+  state.answers[9]={date:d,time:t};
+  go(10);
+});
+
+document.getElementById("restart").addEventListener("click",()=>{
+  state.answers={};
+  document.querySelectorAll(".choice").forEach(x=>x.classList.remove("selected"));
+  document.getElementById("date").value="";
+  document.getElementById("time").value="";
+  go(0);
+});
+
+document.getElementById("soundBtn").addEventListener("click",()=>{
+  state.audio=!state.audio;
+  document.getElementById("soundBtn").textContent=state.audio?"🔊":"🔇";
+  if(state.audio) tone("click");
+});
+
+setInterval(()=>{
+  if(document.hidden) return;
+  const h=document.createElement("div");
+  h.className="floating";
+  h.textContent=Math.random()>.45?"❤":"✦";
+  h.style.left=Math.random()*100+"vw";
+  h.style.fontSize=(9+Math.random()*14)+"px";
+  h.style.animationDuration=(6+Math.random()*7)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),14000);
+},850);
+
+go(0);
+})();
